@@ -23,6 +23,17 @@ def yield_tokens(data_iter):
 
 my_iterator = yield_tokens(dataset)
 
-vocab = build_vocab_from_iterator(my_iterator, specials=["<unk>"])
+vocab = build_vocab_from_iterator(yield_tokens(dataset), specials=["<unk>"])
 vocab.set_default_index(vocab["<unk>"])
-print(vocab.get_stoi())
+
+
+def get_tokenized_sentence_and_indices(iterator):
+    sentence = next(iterator)
+    indices = [vocab[token] for token in sentence]
+    return sentence, indices
+
+
+tokenized_sentence, token_indices = get_tokenized_sentence_and_indices(my_iterator)
+
+print("Tokenized Sentence:", tokenized_sentence)
+print("Token Indices:", token_indices)
